@@ -15,17 +15,16 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
-      - name: Check if working tree is dirty
-        run: |
-          if [[ $(git diff --stat) != '' ]]; then
-            git --no-pager diff
-            echo 'run make test and commit changes'
-            exit 1
-          fi
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+      - name: Build test
+        uses: docker/build-push-action@v2
         with:
-          file: ./coverage.txt
-      - name: Build container image
-        run: docker build -t test/flagger:latest .
+          push: false
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          build-args: |
+            REVISON=${{ github.sha }}
+          tags: |
+            ghcr.io/becram/kubernetes-webhook:${{ steps.prep.outputs.VERSION }}
 
