@@ -12,7 +12,9 @@ import (
 	"github.com/Becram/kubernetes-webhook/pkg/validation"
 	"github.com/sirupsen/logrus"
 	admissionv1 "k8s.io/api/admission/v1"
-	"k8s.io/apimachinery/pkg/types"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	types "k8s.io/apimachinery/pkg/types"
 )
 
 // Admitter is a container for admission business

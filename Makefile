@@ -12,7 +12,7 @@ build:
 .PHONY: docker-build
 docker-build:
 	@echo "\n📦 Building kubernetes-webhook Docker image..."
-	docker build -t kubernetes-webhook:latest . 
+	docker build -t kubernetes-webhook:latest --no-cache . 
 
 # From this point `kind` is required
 .PHONY: cluster
@@ -49,3 +49,31 @@ deploy: push delete deploy-config
 delete:
 	@echo "\n♻️  Deleting kubernetes-webhook deployment if existing..."
 	kubectl delete -f dev/manifests/webhook/ || true
+
+.PHONY: pod
+pod:
+	@echo "\n🚀 Deploying test pod..."
+	kubectl apply -f dev/manifests/pods/lifespan-seven.pod.yaml
+
+.PHONY: delete-pod
+delete-pod:
+	@echo "\n♻️ Deleting test pod..."
+	kubectl delete -f dev/manifests/pods/lifespan-seven.pod.yaml
+
+.PHONY: bad-pod
+bad-pod:
+	@echo "\n🚀 Deploying \"bad\" pod..."
+	kubectl apply -f dev/manifests/pods/bad-name.pod.yaml
+
+.PHONY: delete-bad-pod
+delete-bad-pod:
+	@echo "\n🚀 Deleting \"bad\" pod..."
+	kubectl delete -f dev/manifests/pods/bad-name.pod.yaml
+
+.PHONY: logs
+logs:
+	@echo "\n🔍 Streaming simple-kubernetes-webhook logs..."
+	kubectl logs -l app=kubernetes-webhook -f
+
+.PHONY: delete-all
+delete-all: delete delete-config delete-pod delete-bad-pod
