@@ -4,9 +4,9 @@ metadata:
   name: "kubernetes-webhook.acme.com"
 webhooks:
   - name: "kubernetes-webhook.acme.com"
-    namespaceSelector:
+    objectSelector:
       matchLabels:
-        admission-webhook: enabled
+        validation-check: enabled
     rules:
       - apiGroups: [""]
         apiVersions: ["v1"]

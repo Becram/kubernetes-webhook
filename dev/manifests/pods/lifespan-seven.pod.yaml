@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    acme.com/lifespan-requested: "7"
+    mutation-check: enabled
   name: lifespan-seven
   namespace: apps
 spec:
