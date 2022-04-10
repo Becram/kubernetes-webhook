@@ -43,7 +43,7 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          tags: ${{ steps.vars.outputs.sha_short }}
+          tags: ghcr.io/becram/kubernetes-webhook:${{ steps.vars.outputs.sha_short }}
           build-args: |
             REVISON=${{ steps.vars.outputs.sha_short }}
 
