@@ -25,6 +25,15 @@ func (n nameValidator) Name() string {
 // The returned validation is only valid if the pod name does not contain some
 // bad string.
 func (n nameValidator) Validate(pod *corev1.Pod) (validation, error) {
+
+	// fmt.Printf("limit %s\n", pod.Spec.Containers[0].Resources)
+	// fmt.Printf("limit type: %s\n", reflect.TypeOf(pod.Spec.Containers[0].Resources))
+
+	// return validation{Valid: true, Reason: "Limit"}, nil
+	// if len(pod.Spec.Containers[0].Resources.Limits) = 0 {}
+
+	// }
+
 	badString := "latest"
 
 	if strings.Contains(pod.Spec.Containers[0].Image, badString) {

@@ -12,7 +12,7 @@ build:
 .PHONY: docker-build
 docker-build:
 	@echo "\n📦 Building kubernetes-webhook Docker image..."
-	docker build -t kubernetes-webhook:latest . 
+	docker build -t kubernetes-webhook:1.0 . 
 
 # From this point `kind` is required
 .PHONY: cluster
@@ -28,7 +28,7 @@ delete-cluster:
 .PHONY: push
 push: docker-build
 	@echo "\n📦 Pushing admission-webhook image into Kind's Docker daemon..."
-	kind load docker-image kubernetes-webhook:latest
+	kind load docker-image kubernetes-webhook:1.0
 
 .PHONY: deploy-config
 deploy-config:
@@ -58,7 +58,7 @@ pod:
 .PHONY: delete-pod
 delete-pod:
 	@echo "\n♻️ Deleting test pod..."
-	kubectl delete -f dev/manifests/pods/lifespan-seven.pod.yaml
+	kubectl delete -f dev/manifests/pods/lifespan-seven.pod.yaml 
 
 .PHONY: bad-pod
 bad-pod:

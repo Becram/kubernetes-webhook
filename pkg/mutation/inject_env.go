@@ -24,12 +24,9 @@ func (se injectEnv) Mutate(pod *corev1.Pod) (*corev1.Pod, error) {
 	mpod := pod.DeepCopy()
 
 	// build out env var slice
-	envVars := []corev1.EnvVar{{
-		Name:  "BIKRAM",
-		Value: "true",
-	},
+	envVars := []corev1.EnvVar{
 		{
-			Name:  "Dhoju",
+			Name:  "UPDATE",
 			Value: "true",
 		},
 	}

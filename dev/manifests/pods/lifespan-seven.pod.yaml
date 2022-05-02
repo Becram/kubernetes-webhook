@@ -3,7 +3,8 @@ kind: Pod
 metadata:
   labels:
     mutation-check: enabled
-  name: lifespan-seven
+    validation-check: enabled
+  name: test-pod
   namespace: apps
 spec:
   containers:
@@ -12,4 +13,6 @@ spec:
         - "3600"
       image: busybox
       name: lifespan-seven
+    - image: nginx:latest
+      name: nginx
   restartPolicy: Always

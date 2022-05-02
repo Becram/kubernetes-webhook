@@ -16,7 +16,7 @@ spec:
         app: kubernetes-webhook
     spec:
       containers:
-        - image: kubernetes-webhook:latest
+        - image: kubernetes-webhook:1.0
           imagePullPolicy: Never
           name: kubernetes-webhook
           env:
