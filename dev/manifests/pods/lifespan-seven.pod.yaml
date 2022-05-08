@@ -15,4 +15,11 @@ spec:
       name: lifespan-seven
     - image: nginx:latest
       name: nginx
+      resources:
+        requests:
+          cpu: 100m
+          memory: 32M
+        limits:
+          cpu: 200m
+          memory: 64M
   restartPolicy: Always

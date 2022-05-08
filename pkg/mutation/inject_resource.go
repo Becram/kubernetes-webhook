@@ -1,6 +1,9 @@
 package mutation
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -43,20 +46,31 @@ func (mpl containerResources) Mutate(pod *corev1.Pod) (*corev1.Pod, error) {
 	}
 
 	for index, n := range mpod.Spec.Containers {
+		// scheme := scheme.Scheme
+
 		mpl.Logger.WithField("container", n.Name).
 			Printf("applying default limits and request resource")
-		// mpl.Logger.WithField("Container Modified: ", n.Name)
-		// container, err := json.Marshal(n)
-		// if err != nil {
-		// 	panic(err)
-		// }
-		// fmt.Println("Container Modified: ", string(n.Name))
-
-		mpod.Spec.Containers[index].Resources = tn
+		mpl.Logger.WithField("Container Modified: ", n.Name)
+		containerR, err := json.Marshal(n.Resources)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Container Json: ", string(containerR))
+		if checkEmptyJSON(containerR) {
+			fmt.Printf("injecting resource to %s \n", n.Name)
+			mpod.Spec.Containers[index].Resources = tn
+		}
 
 	}
 
 	return mpod, nil
+}
+
+func checkEmptyJSON(j []byte) bool {
+	if string(j) == "{}" {
+		return true
+	}
+	return false
 }
 
 func parseResources() (corev1.ResourceRequirements, error) {
@@ -104,29 +118,3 @@ func parseQuantity(raw string) (resource.Quantity, error) {
 	}
 	return resource.ParseQuantity(raw)
 }
-
-// 	return resource.ParseQuantity(raw)
-// }
-
-// // appendTolerations appends existing to new without duplicating any tolerations
-// func appendResource(new, existing corev1.ResourceRequirements) corev1.ResourceRequirements {
-// 	var toAppend []corev1.ResourceRequirements
-// 	if reflect.DeepEqual(new, toAppend) {
-// 		return new
-// 	}
-
-// 	for _, n := range new {
-// 		found := false
-// 		for _, e := range existing {
-
-// 			if reflect.DeepEqual(n, e) {
-// 				found = true
-// 			}
-// 		}
-// 		if !found {
-// 			toAppend = append(toAppend, n)
-// 		}
-// 	}
-
-// 	return append(existing, toAppend...)
-// }

@@ -51,14 +51,14 @@ delete:
 	kubectl delete -f dev/manifests/webhook/ || true
 
 .PHONY: pod
-pod:
+pod: delete-pod
 	@echo "\n🚀 Deploying test pod..."
 	kubectl apply -f dev/manifests/pods/lifespan-seven.pod.yaml
 
 .PHONY: delete-pod
 delete-pod:
 	@echo "\n♻️ Deleting test pod..."
-	kubectl delete -f dev/manifests/pods/lifespan-seven.pod.yaml 
+	kubectl delete -f dev/manifests/pods/lifespan-seven.pod.yaml --force
 
 .PHONY: bad-pod
 bad-pod:
